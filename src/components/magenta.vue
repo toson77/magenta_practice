@@ -10,6 +10,7 @@
     <p></p>
     <button @click="musicGenerate()">generate</button>
     <p>{{music}}</p>
+    <button @click="playRef()">musicStart</button>
     <button @click="playRNN()">runRNN</button>
   </div>
 </template>
@@ -29,7 +30,8 @@ export default {
         totalTime: 0
       },
       music_rnn: Object,
-      rnnPlayer: Object
+      rnnPlayer: Object,
+      refPlayer: Object
     };
   },
   methods: {
@@ -64,11 +66,15 @@ export default {
       this.music_rnn
         .continueSequence(qns, RNN_STEPS, RNN_TEMPERATURE)
         .then(sample => this.rnnPlayer.start(sample));
+    },
+    playRef() {
+      this.refPlayer.start(this.music);
     }
   },
   mounted: function() {
     console.log("mounted");
     // Initialize model
+    this.refPlayer = new mm.Player();
     this.music_rnn = new mm.MusicRNN(
       "https://storage.googleapis.com/magentadata/js/checkpoints/music_rnn/basic_rnn"
     );
