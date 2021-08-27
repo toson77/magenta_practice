@@ -10,8 +10,10 @@
     <p></p>
     <button @click="musicGenerate()">generate</button>
     <p>{{music}}</p>
-    <button @click="playRef()">musicStart</button>
-    <button @click="playRNN()">runRNN</button>
+    <template v-if="ismusic">
+      <button @click="playRef()">musicStart</button>
+      <button @click="playRNN()">runRNN</button>
+    </template>
   </div>
 </template>
 <script>
@@ -31,7 +33,8 @@ export default {
       },
       music_rnn: Object,
       rnnPlayer: Object,
-      refPlayer: Object
+      refPlayer: Object,
+      ismusic: false
     };
   },
   methods: {
@@ -56,6 +59,9 @@ export default {
           }
         });
         this.music.totalTime = str.length;
+        if (str.length) {
+          this.ismusic = true;
+        }
       }
     },
     playRNN() {
